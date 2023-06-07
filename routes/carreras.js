@@ -12,6 +12,25 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
+// CARRERAS CON MATERIAS
+
+router.get("/conMaterias", (req, res) => {
+  console.log("Carreras con materias");
+  models.carrera
+    .findAll({
+      include: [
+        {
+          model: models.materia,
+          as: "materias-de-carrera",
+          attributes: ["nombre"],
+        },
+      ],
+      attributes: ["id", "nombre"],
+    })
+    .then((carreras) => res.send(carreras))
+    .catch(() => res.sendStatus(500));
+});
+
 router.post("/", (req, res) => {
   models.carrera
     .create({ nombre: req.body.nombre })
@@ -59,7 +78,7 @@ router.put("/:id", (req, res) => {
           res.sendStatus(500)
         }
       });
-    findCarrera(req.params.id, {
+  findCarrera(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
