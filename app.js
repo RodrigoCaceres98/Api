@@ -11,40 +11,40 @@ var materiasRouter = require('./routes/materias');
 
 var app = express();
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json())
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.json())
 
 
 
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 
-const keys = require('./settings/keys');
+// const keys = require('./settings/keys');
 
-app.set('key', keys.key);
- 
+// app.set('key', keys.key);
 
-app.get("/", (req, res) => {
-  res.send("holaMundo")
-})
 
-app.post("/login", (req, res) => {
-  if (req.body.usuario == "admin" && req.body.pass == "12345") {
-    const payload = {
-      check: true
-    };
-    const token = jwt.sign(payload, app.get('key'), {
-      expiresIn: '7d'
-    });
-    res.json({
-      message: '¡AUTENTICACION EXITOSA!',
-      token: token
-    })
-  }else{
-    res.json({
-      message: 'Usuario y/o contraseña incorrecta'
-    })
-  }
-})
+// app.get("/", (req, res) => {
+//   res.send("holaMundo")
+// })
+
+// app.post("/login", (req, res) => {
+//   if (req.body.usuario == "admin" && req.body.pass == "12345") {
+//     const payload = {
+//       check: true
+//     };
+//     const token = jwt.sign(payload, app.get('key'), {
+//       expiresIn: '7d'
+//     });
+//     res.json({
+//       message: '¡AUTENTICACION EXITOSA!',
+//       token: token
+//     })
+//   }else{
+//     res.json({
+//       message: 'Usuario y/o contraseña incorrecta'
+//     })
+//   }
+// })
 
 
 // view engine setup
@@ -58,9 +58,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use('/car', carrerasRouter);
-app.use('/mat', materiasRouter);
-
+//Agregada verificación para las diferentes rutas.
+app.use("/car", verificacion, carrerasRouter);
+app.use("/mat", verificacion, materiasRouter); //Agregado materias
+app.use("/alu", verificacion, alumnosRouter); //Agregado alumnos
+app.use("/prof", verificacion, profesoresRouter); //Agregado profesores
+app.use("/ins", verificacion, inscripcionesRouter); //Agregado inscripciones
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
