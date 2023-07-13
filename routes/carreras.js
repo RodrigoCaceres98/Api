@@ -4,9 +4,24 @@ var models = require("../models");
 
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
+  //pagina que quiero ver
+  const pagina = Number.parseInt(req.query.pagina);
+  //cantidad de elentos por pagina
+  const cantidad = Number.parseInt(req.query.cantidad);
+  console.log(
+    "Pagina número " +
+    pagina +
+    ", Cantidad de profesores por página " +
+    cantidad
+  );
+
   models.carrera
     .findAll({
-      attributes: ["id", "nombre"]
+      attributes: ["id", "nombre"],
+      // limitacion de paginado
+      limit: cantidad,
+      //para ubicar pagina
+      offset: pagina * cantidad,
     })
     .then(carreras => res.send(carreras))
     .catch(() => res.sendStatus(500));

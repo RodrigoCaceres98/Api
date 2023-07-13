@@ -21,17 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     materia.belongsTo(
-      models.profesor, // modelo al que pertenece
+      models.profesores, // modelo al que pertenece
       {
         as: "Profesor-Relacionado", // nombre de mi relacion
         foreignKey: "id_profesor", // campo con el que voy a igualar
       }
     );
-
-    materia.hasMany(models.inscripciones, {
-      as: "inscripciones",
-      foreignKey: "id_materia",
-    });
   };
 
   return materia;

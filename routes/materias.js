@@ -5,18 +5,30 @@ var models = require("../models");
 
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
+  // //pagina que quiero ver
+  // const pagina = Number.parseInt(req.query.pagina);
+  // //cantidad de elentos por pagina
+  // const cantidad = Number.parseInt(req.query.cantidad);
+
   models.materia
     .findAll({
-      attributes: ["id", "nombre", "id_carrera"],
+      attributes: ["id", "nombre", "id_carrera", "id_profesor"],
+      // // limitacion de paginado
+      // limit: cantidad,
+      // //para ubicar pagina
+      // offset: pagina * cantidad,
     })
     .then((materias) => res.send(materias))
     .catch(() => res.sendStatus(500));
 });
 
+
+
+
 router.post("/", (req, res) => {
   console.log("Ingreso de materia");
   models.materia
-    .create({ nombre: req.body.nombre, id_carrera: req.body.id_carrera })
+    .create({ nombre: req.body.nombre, id_carrera: req.body.id_profesor })
     .then((materia) => res.status(201).send({ id: materia.id }))
     .catch((error) => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {

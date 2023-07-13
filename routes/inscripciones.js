@@ -5,20 +5,21 @@ var models = require("../models");
 router.get("/", (req, res) => {
     //PAGINACION
     //FORMATO localhost:3001/ins?pagina=__&cantidad=__
-    const pagina = Number.parseInt(req.query.pagina);
-    const cantidad = Number.parseInt(req.query.cantidad);
+    // const pagina = Number.parseInt(req.query.pagina);
+    // const cantidad = Number.parseInt(req.query.cantidad);
 
-    console.log(
-        "Pagina número " +
-        pagina +
-        ", Cantidad de inscripciones por página " +
-        cantidad
-    );
+    // console.log(
+    //     "Pagina número " +
+    //     pagina +
+    //     ", Cantidad de inscripciones por página " +
+    //     cantidad
+    // );
+    console.log("Esto es un mensaje para ver en consola");
     models.inscripciones
         .findAll({
-            attributes: ["id", "fecha", "id_alumno", "id_materia"],
-            limit: cantidad,
-            offset: pagina * cantidad,
+            attributes: ["id", "fecha", "id_materia", "id_alumno"],
+            // limit: cantidad,
+            // offset: pagina * cantidad,
         })
         .then((inscripciones) => res.send(inscripciones))
         .catch(() => res.sendStatus(500));
